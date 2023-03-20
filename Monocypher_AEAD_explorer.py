@@ -208,7 +208,7 @@ Copyright (C) 2023 cryptoam
         This program assumes all data(plaintext or associated) is utf-8 encoded.
 
         You are invited to help out by forking this and/or submitting bug reports.
-        Security issues that do not involve insecure key/nonces generation or insecure handling of sensitive data should be reported to cryptoam(aT)gmail(D0t)com
+        Security issues that do not involve insecure key/nonces generation or insecure handling of sensitive data should be reported to cryptoam(aT)gmail(D0t)com or on the github.
         """)
     def do_generate(self, arg):
         """Used to help generate cryptoparameters like keys and nonce """
