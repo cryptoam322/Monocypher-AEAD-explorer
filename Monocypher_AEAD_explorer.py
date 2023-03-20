@@ -347,6 +347,9 @@ def encrypt(key:str, nonce:str, plaintext:str, data:str):
     ciphertext=base64.b64encode(ciphertext)     #convert into base 64 for an easier time handling as strings(copy+paste)
     data=base64.b64encode(data)
     mac=base64.b64encode(mac)
+    ciphertext=ciphertext.decode("utf-8")
+    data=data.decode("utf-8")
+    mac=mac.decode("utf-8")
     return(ciphertext, data, mac)
 
 
