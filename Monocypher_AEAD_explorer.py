@@ -51,7 +51,7 @@ def main():
 
 class wrapper(cmd.Cmd):
     """This provides cli handling"""
-    intro="This is AES handler ver.1\nThis program is under GPL v3 or later versions, see the associated LICENSE file for license details.\nGithub link is at https://github.com/cryptoam322/Monocypher-AEAD-explorer.\nUse command help if you are uncertain on how to procede."
+    intro="This is Monocypher AEAD explorer ver.1\nThis program is under GPL v3 or later versions, see the associated LICENSE file for license details.\nGithub link is at https://github.com/cryptoam322/Monocypher-AEAD-explorer.\nUse command help if you are uncertain on how to procede."
     prompt=">"
     def do_encrypt(self,arg):
         """Starts encryption mode"""
