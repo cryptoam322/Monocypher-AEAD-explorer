@@ -261,7 +261,7 @@ Copyright (C) 2023 cryptoam
         else:
             print("This command expects two to three arguments. See 'help generate' for more information.")
         if valid_args==True:
-            if data==None:
+            if data==None:  #no data provided, we must generate the entirety of the key/nonce itself
                 if mode=="pad" and generate_type=="key":
                     result=""
                     for i in range(0,64):
@@ -278,14 +278,14 @@ Copyright (C) 2023 cryptoam
                 elif mode=="random" and generate_type=="nonce":
                     result=secrets.token_hex(24)
                     print("Your generated nonce is: "+result)
-            else:
-                if len(data)>=64 and generate_type=="key":
+            else:               #data is provided
+                if len(data)>=64 and generate_type=="key":          #this and the below case is when we have at least enough data to directly use to generate the key
                     result=data[0:64]
                     print("Your generated key is: "+result)
-                elif len(data)>=48 and generate_type=="nonce":
+                elif len(data)>=48 and generate_type=="nonce":  #the other case as mentioned above but for the nonce
                     result=data[0:48]
                     print("Your generated nonce is: "+result)
-                elif len(data)<64 and generate_type=="key":
+                elif len(data)<64 and generate_type=="key":         #we do not have enough data to generate the key
                     remaining_length=64-len(data)
                     if mode=="pad":
                         remainder=""
@@ -299,7 +299,7 @@ Copyright (C) 2023 cryptoam
                             remainder=secrets.token_hex(int(remaining_length/2))
                     result=data+remainder
                     print("Your generated key is: "+result)
-                elif len(data)<48 and generate_type=="nonce":
+                elif len(data)<48 and generate_type=="nonce":       #we do not have enough data to generate the nonce
                     remaining_length=48-len(data)
                     if mode=="pad":
                         remainder=""
@@ -310,7 +310,7 @@ Copyright (C) 2023 cryptoam
                             remainder=secrets.token_hex(int((remaining_length+1)/2))    #generate excess
                             remainder=remainder[0:len(remainder)-1]                             #trim said excess
                         else:
-                            remainder=secrets.token_hex(remaining_length/2)
+                            remainder=secrets.token_hex(int(remaining_length/2))
                     result=data+remainder
                     print("Your generated nonce is: "+result)
                 else:
