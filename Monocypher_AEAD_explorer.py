@@ -57,14 +57,27 @@ class wrapper(cmd.Cmd):
         """Starts encryption mode"""
         args=parse(arg)
         valid_args=[False]
-        if len(args)==3:
+        if len(args)==3:                        #refactor argument validation code here
             key, nonce, plaintext=args
             data=default_data
             valid_args=check_encrypt_parameters(key, nonce, plaintext, data)
         elif len(args)==4:
             key, nonce, plaintext, data=args
             valid_args=check_encrypt_parameters(key, nonce, plaintext, data)
+        elif len(args)==0:
+            valid_args=check_encrypt_parameters(None, None, None, None)
+            print("This function is expecting either three or four arguments. See 'help encrypt' for more information.")
+        elif len(args)==1:
+            key=args[0]
+            valid_args=check_encrypt_parameters(key, None, None, None)
+            print("This function is expecting either three or four arguments. See 'help encrypt' for more information.")
+        elif len(args)==2:
+            key, nonce=args
+            valid_args=check_encrypt_parameters(key, nonce, None, None)
+            print("This function is expecting either three or four arguments. See 'help encrypt' for more information.")
         else:
+            key, nonce, plaintext, data=args
+            valid_args=check_encrypt_parameters(key, nonce, plaintext, data)
             print("This function is expecting either three or four arguments. See 'help encrypt' for more information.")
         if valid_args[0]==False:
             invalid_args=valid_args[1]
@@ -76,6 +89,12 @@ class wrapper(cmd.Cmd):
                 print("The nonce is invalid. See 'help encrypt for more information.'")
             else:
                 pass
+            if "plaintext" in invalid_args:
+                print("The plaintext is invalid. See 'help encrypt for more information.'")
+            else:
+                pass
+            if "associated data" in invalid_args:
+                print("The associated data is invalid. See 'help encrypt for more information.'")
         else:
             result=encrypt(key, nonce, plaintext, data)
             ciphertext, data, mac=result
@@ -98,29 +117,32 @@ class wrapper(cmd.Cmd):
             key, nonce, ciphertext, data, mac=args
             valid_args=check_decrypt_parameters(key, nonce, ciphertext, data, mac)
         else:
-            print("This argument is expecting five arguments. See 'help decryp' for more information.")
+            print("This argument is expecting five arguments. See 'help decrypt' for more information.")
         if valid_args[0]==False:
-            invalid_args=valid_args[1]
-            if "key" in invalid_args:
-                print("The key is invalid. See 'help decrypt' for more information.")
-            else:
-                pass
-            if "nonce" in invalid_args:
-                print("The nonce is invalid. See 'help decrypt' for more information.")
-            else:
-                pass
-            if "ciphertext" in invalid_args:
-                print("The ciphertext is invalid. See 'help decrypt' for more information.")
-            else:
-                pass
-            if "data" in invalid_args:
-                print("The associated data is invalid. See 'help decrypt' for more information.")
-            else:
-                pass
-            if "mac" in invalid_args:
-                print("The mac is invalid. See 'help decrypt' for more information.")
-            else:
-                pass
+            try:
+                invalid_args=valid_args[1]
+                if "key" in invalid_args:
+                    print("The key is invalid. See 'help decrypt' for more information.")
+                else:
+                    pass
+                if "nonce" in invalid_args:
+                    print("The nonce is invalid. See 'help decrypt' for more information.")
+                else:
+                    pass
+                if "ciphertext" in invalid_args:
+                    print("The ciphertext is invalid. See 'help decrypt' for more information.")
+                else:
+                    pass
+                if "data" in invalid_args:
+                    print("The associated data is invalid. See 'help decrypt' for more information.")
+                else:
+                    pass
+                if "mac" in invalid_args:
+                    print("The mac is invalid. See 'help decrypt' for more information.")
+                else:
+                    pass
+            except: #this means that the amount of arguments is not 5 and therefore the appropiate text(need 5 arguments specifically) has already been displayed
+                pass  #PS, refactor this as well
         else:
             result=decrypt(key, nonce, ciphertext, data, mac)
             if result==None:
@@ -318,7 +340,7 @@ def is_hex(test_string:str):
 
 
 def check_encrypt_parameters(key:str, nonce:str, plaintext:str, data:str):
-    """This function makes sure that input arguments for the needed paramters are valid"""
+    """This function makes sure that input arguments for the needed parameters are valid"""
     valid_param=True
     invalid_params=[]
     if is_hex(key) and len(key)==64:
@@ -331,7 +353,16 @@ def check_encrypt_parameters(key:str, nonce:str, plaintext:str, data:str):
     else:
         valid_param=False
         invalid_params.append("nonce")
-    #we don't need to check plaintext or data because both will already be strings(or the cmd module has unexpected behavior) and will be appropiately converted to bytes anyways
+    if plaintext!=None:     #turns out we do need to check plaintext and associated data
+        pass
+    else:
+        valid_param=False
+        invalid_params.append("plaintext")
+    if data!=None:
+        pass
+    else:
+        valid_param=False
+        invalid_params.append("associated data")
     return(valid_param,invalid_params)
 
 
