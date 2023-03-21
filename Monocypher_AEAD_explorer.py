@@ -386,6 +386,9 @@ def encrypt(key:str, nonce:str, plaintext:str, data:str):
 
     
 def check_decrypt_parameters(key:str, nonce:str, ciphertext:str, data:str, mac:str):
+    """
+    This function checks that input arguments for decryption are valid
+    """
     valid_param=True
     invalid_params=[]
     if is_hex(key) and len(key)==64:
