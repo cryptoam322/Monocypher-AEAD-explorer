@@ -86,15 +86,15 @@ class wrapper(cmd.Cmd):
             else:
                 pass
             if "nonce" in invalid_args:
-                print("The nonce is invalid. See 'help encrypt for more information.'")
+                print("The nonce is invalid. See 'help encrypt' for more information.'")
             else:
                 pass
             if "plaintext" in invalid_args:
-                print("The plaintext is invalid. See 'help encrypt for more information.'")
+                print("The plaintext is invalid. See 'help encrypt' for more information.'")
             else:
                 pass
             if "associated data" in invalid_args:
-                print("The associated data is invalid. See 'help encrypt for more information.'")
+                print("The associated data is invalid. See 'help encrypt' for more information.'")
         else:
             result=encrypt(key, nonce, plaintext, data)
             ciphertext, data, mac=result
