@@ -343,16 +343,24 @@ def check_encrypt_parameters(key:str, nonce:str, plaintext:str, data:str):
     """This function makes sure that input arguments for the needed parameters are valid"""
     valid_param=True
     invalid_params=[]
-    if is_hex(key) and len(key)==64:
-        pass
-    else:
+    if key==None:
         valid_param=False
         invalid_params.append("key")
-    if is_hex(nonce) and len(nonce)==48:
-        pass
     else:
+        if is_hex(key) and len(key)==64:
+            pass
+        else:
+            valid_param=False
+            invalid_params.append("key")
+    if nonce==None:
         valid_param=False
         invalid_params.append("nonce")
+    else:
+        if is_hex(nonce) and len(nonce)==48:
+            pass
+        else:
+            valid_param=False
+            invalid_params.append("nonce")
     if plaintext!=None:     #turns out we do need to check plaintext and associated data
         pass
     else:
